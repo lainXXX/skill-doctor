@@ -1,0 +1,38 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+/.claude/
+/.codex/
+/.agents/
+
+# Private review material and generated reports
+/reports/
+/evidence/
+/private/
+/skill-doctor-report*.md
+/skill-doctor-report*.json
+
+# Dependencies, caches and temporary files
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+coverage/
+*.log
+*.tmp
+*.bak
+*.bak-*
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/

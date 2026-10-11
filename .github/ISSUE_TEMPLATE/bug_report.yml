@@ -1,0 +1,34 @@
+name: 问题反馈 / Bug report
+description: 报告触发、流程、引用或评级方面的问题。
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: 请先搜索已有 Issues。输入与报告请脱敏；漏洞按 SECURITY.md 私密报告。
+  - type: textarea
+    id: environment
+    attributes:
+      label: 版本与环境
+      description: skill-doctor 提交号、Claude Code 版本、评估模型和操作系统。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 调用方式与最小输入
+      description: 提供可公开的最小复现，不要上传完整私人 skill 或会话历史。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为与证据
+      description: 脱敏后的相关报告片段；评级争议请指明标准和证据行号。
+    validations:
+      required: true

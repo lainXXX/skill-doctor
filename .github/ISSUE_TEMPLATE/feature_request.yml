@@ -1,0 +1,22 @@
+name: 改进建议 / Feature request
+description: 提出协议、证据路径或使用体验的改进。
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 使用场景与问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议与预期效果
+      description: 请说明适用范围、误报风险，以及对现有报告或评级的影响。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 示例或已有证据
+      description: 可提供经过授权和脱敏的真实案例，或说明尚未验证的部分。

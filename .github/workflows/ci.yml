@@ -1,0 +1,65 @@
+name: Document integrity
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  documents:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validation dependency
+        run: python -m pip install PyYAML==6.0.3
+      - name: Check frontmatter and references
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import yaml
+
+          root = Path.cwd().resolve()
+          skill = (root / "SKILL.md").read_text(encoding="utf-8")
+          match = re.match(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", skill, re.S)
+          if not match:
+              raise SystemExit("Missing SKILL.md YAML frontmatter")
+          metadata = yaml.safe_load(match[1])
+          if not isinstance(metadata, dict) or metadata.get("name") != "skill-doctor":
+              raise SystemExit("Invalid skill name")
+          if not isinstance(metadata.get("description"), str) or not metadata["description"].strip():
+              raise SystemExit("Missing skill description")
+
+          documents = sorted(root.glob("*.md")) + sorted((root / "references").glob("*.md"))
+          references = set()
+          for document in documents:
+              text = document.read_text(encoding="utf-8")
+              for name in re.findall(r"references/([A-Za-z0-9_-]+\.md)\b", text):
+                  if name == "X.md":  # SKILL.md uses this as an explicit path placeholder.
+                      continue
+                  target = root / "references" / name
+                  if not target.is_file():
+                      raise SystemExit(f"Missing reference: {document.name} -> {name}")
+                  if document.name == "SKILL.md":
+                      references.add(name)
+              for href in re.findall(r"\]\(([^)\s]+)\)", text):
+                  if re.match(r"[A-Za-z][A-Za-z0-9+.-]*:", href) or href.startswith("#"):
+                      continue
+                  target = (document.parent / href.split("#", 1)[0]).resolve()
+                  if not target.is_relative_to(root) or not target.is_file():
+                      raise SystemExit(f"Invalid local link: {document.name} -> {href}")
+          if references != {path.name for path in (root / "references").glob("*.md")}:
+              raise SystemExit("SKILL.md reference list differs from bundled protocols")
+          print(f"PASS: frontmatter, {len(references)} skill references, {len(documents)} Markdown documents")
+          print("Static integrity only; model behavior and rating accuracy were not tested.")
+          PY
