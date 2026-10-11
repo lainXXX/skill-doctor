@@ -7,7 +7,7 @@
 
 A Claude Code skill for evidence-based reviews of skill design, trigger boundaries, safety, and maintainability.
 
-默认只读评估，不自动修改被评估文件；用户明确要求保存报告时才落盘。当前处于早期开发阶段，规则变化见 [更新记录](CHANGELOG.md)。
+默认只读评估，不自动修改被评估文件；用户明确要求保存报告时才落盘。
 
 ## 安装
 
@@ -105,7 +105,7 @@ references/trigger-protocol.md   模拟触发实验协议
 
 ## 参与贡献
 
-欢迎提交脱敏的问题反馈、真实评估案例、协议改进和文档修正。请先阅读 [贡献指南](CONTRIBUTING.md)；漏洞报告见 [安全政策](SECURITY.md)。维护者的上传与更新步骤见 [发布指南](PUBLISHING.md)。
+欢迎通过 Issues 或 Pull Request 提交脱敏的问题反馈、真实评估案例、协议改进和文档修正。
 
 CI 仅检查 skill frontmatter、参考文件和文档链接，不调用模型、不运行被评估 skill，也不自动给项目评级。
 
